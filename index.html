@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💕 恋爱理想型画像测试 - 找到你的命定恋人</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- 激活码验证页面 -->
+    <div id="activationPage" class="page active">
+        <div class="welcome-container">
+            <div class="welcome-header">
+                <div class="logo">
+                    <div class="heart-icon">💕</div>
+                    <h1>恋爱理想型画像测试</h1>
+                </div>
+                <p class="subtitle">基于心理学研究的专业测评工具</p>
+            </div>
+            
+            <div class="welcome-card">
+                <div class="feature-badge">
+                    <span class="badge-icon">🎯</span>
+                    <span>基于心理学研究的专业测评工具 · <strong style="color: #FF1744;">知愈心理测评社</strong></span>
+                </div>
+                
+                <h2 class="welcome-title">恋爱理想型画像测试</h2>
+                
+                <div class="copyright-warning">
+                    <span class="warning-icon">🛡️</span>
+                    <strong>原创研发·正版声明</strong> 
+                    本测评由<strong style="color: #FF1744;">知愈心理测评社</strong>原创研发，所有题目、算法、分析维度及结果解读均为原创设计。
+                    <strong style="color: #d32f2f;">严禁未经授权转载、复制、商用或二次改编。</strong>
+                    如发现盗版、抄袭、侵权等行为，我们将保留法律追诉权，依法追究侵权责任并索赔损失。
+                    请尊重知识产权，支持原创内容。
+                </div>
+                
+                <p class="welcome-desc">
+                    专业的恋爱心理评估工具，基于多个经过验证的心理学理论和大数据分析，
+                    通过30道精心设计的题目，全方位解析你的理想恋人画像。
+                    结合性格分析、星座特质、MBTI人格、恋爱心理学等多维度，
+                    为你描绘出最适合的那个TA！
+                </p>
+                
+                <div class="features-grid">
+                    <div class="feature-item">
+                        <div class="feature-icon">🎯</div>
+                        <div class="feature-content">
+                            <h3>10大</h3>
+                            <p>理想型分类</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">⏱️</div>
+                        <div class="feature-content">
+                            <h3>5-10分钟</h3>
+                            <p>轻松完成</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">📊</div>
+                        <div class="feature-content">
+                            <h3>15+项</h3>
+                            <p>深度分析</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">💝</div>
+                        <div class="feature-content">
+                            <h3>性格外貌</h3>
+                            <p>全面画像</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">⭐</div>
+                        <div class="feature-content">
+                            <h3>星座MBTI</h3>
+                            <p>交叉分析</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">💡</div>
+                        <div class="feature-content">
+                            <h3>恋爱攻略</h3>
+                            <p>实用技巧</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">🎁</div>
+                        <div class="feature-content">
+                            <h3>甜蜜清单</h3>
+                            <p>必做小事</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">🔒</div>
+                        <div class="feature-content">
+                            <h3>100%</h3>
+                            <p>隐私保护</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="activation-section">
+                    <div class="input-wrapper">
+                        <input type="text" id="codeInput" placeholder="请输入激活码" maxlength="20">
+                    </div>
+                    <button class="btn-primary" id="startBtn">
+                        <span>开始测试</span>
+                        <span class="arrow">→</span>
+                    </button>
+                    <div class="error" id="errorMsg"></div>
+                </div>
+                
+                <div class="tip-text">
+                    💡 提示：每个激活码仅可使用一次
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 知情同意书页面 -->
+    <div id="consentPage" class="page">
+        <div class="consent-container">
+            <div class="consent-card-simple">
+                <div class="consent-icon">📋</div>
+                <h2>知情同意书</h2>
+                <p class="consent-text">
+                    本测评旨在帮助您了解理想恋人类型。所有数据仅保存在本地设备，完全匿名。
+                    测评结果仅供参考，不构成专业建议。参与完全自愿，可随时退出。
+                </p>
+                <button class="btn-primary btn-large" id="agreeBtn">
+                    <span>我已阅读并同意开始测评</span>
+                    <span class="arrow">→</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 答题页面 -->
+    <div id="quizPage" class="page">
+        <div class="quiz-container">
+            <!-- 顶部进度条 -->
+            <div class="quiz-header">
+                <div class="progress-info">
+                    <div class="progress-bar-wrapper">
+                        <div class="progress-bar-bg">
+                            <div class="progress-bar-fill" id="progressFill"></div>
+                        </div>
+                        <div class="progress-percentage" id="progressPercentage">0%</div>
+                    </div>
+                    <div class="progress-stats">
+                        <span class="answered-count">已答题：<strong id="answeredCount">0</strong></span>
+                        <span class="total-count">共 <strong id="totalCount">30</strong> 题</span>
+                        <span class="required-tip">🔴 红色为必答题</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 题目列表 -->
+            <div class="questions-wrapper" id="questionsWrapper">
+                <!-- 题目将通过 JavaScript 动态生成 -->
+            </div>
+            
+            <!-- 提交按钮 -->
+            <div class="submit-section">
+                <div class="submit-notice" id="submitNotice">
+                    请确保所有必答题都已完成
+                </div>
+                <button class="btn-submit" id="submitBtn" disabled>
+                    <span>完成评估并查看结果</span>
+                    <span class="check-icon">✓</span>
+                </button>
+            </div>
+        </div>
+        
+        <!-- 右侧进度导航（桌面端） -->
+        <div class="progress-nav" id="progressNav">
+            <h4>答题进度</h4>
+            <div class="question-dots" id="questionDots">
+                <!-- 题目导航点将通过 JavaScript 动态生成 -->
+            </div>
+            <div class="progress-legend">
+                <div><span class="dot dot-answered"></span> 已回答</div>
+                <div><span class="dot dot-unanswered"></span> 未回答</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 加载分析页面 -->
+    <div id="loadingPage" class="page">
+        <div class="loading-container">
+            <div class="heart-animation">💕</div>
+            <h2 class="loading-title">正在分析您的回答</h2>
+            <p class="loading-subtitle">我们正在使用科学算法为您描绘理想恋人画像，请稍候...</p>
+            <div class="loading-steps">
+                <div class="loading-step active" id="step1">
+                    <span class="step-icon">✓</span>
+                    <span>应用四维度标准化算法</span>
+                </div>
+                <div class="loading-step" id="step2">
+                    <span class="step-icon">⟳</span>
+                    <span>生成个性化分析报告</span>
+                </div>
+                <div class="loading-step" id="step3">
+                    <span class="step-icon">⟳</span>
+                    <span>保护您的隐私数据</span>
+                </div>
+            </div>
+            <div class="loading-bar">
+                <div class="loading-bar-fill" id="loadingBarFill"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 结果页面 -->
+    <div id="resultPage" class="page">
+        <div class="result-container">
+            <div class="result-header">
+                <button class="btn-back" onclick="location.reload()">← 返回首页</button>
+                <div class="result-actions">
+                    <button class="btn-icon" onclick="window.print()">📥 下载PDF</button>
+                    <button class="btn-icon" onclick="location.reload()">🔄 重新测评</button>
+                </div>
+            </div>
+            
+            <div class="result-content" id="resultContent">
+                <!-- 结果内容将通过 JavaScript 动态生成 -->
+            </div>
+        </div>
+    </div>
+
+    <script src="codes.js"></script>
+    <script src="questions.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

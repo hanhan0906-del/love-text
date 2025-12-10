@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>激活码生成器</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: "Microsoft YaHei", Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            max-width: 800px;
+            width: 100%;
+        }
+        
+        h1 {
+            color: #667eea;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: bold;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s;
+            margin-bottom: 10px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        .output {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f5f5f5;
+            border-radius: 8px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .output h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+        
+        .code-list {
+            font-family: "Courier New", monospace;
+            font-size: 14px;
+            line-height: 1.8;
+            color: #333;
+        }
+        
+        .stats {
+            background: #e8f0fe;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .stats span {
+            color: #667eea;
+            font-weight: bold;
+            font-size: 24px;
+        }
+        
+        .tip {
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            color: #856404;
+            font-size: 14px;
+        }
+        
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔑 激活码生成器</h1>
+        
+        <div class="form-group">
+            <label>激活码前缀：</label>
+            <input type="text" id="prefix" value="LOVE2024" placeholder="例如：LOVE2024">
+        </div>
+        
+        <div class="form-group">
+            <label>起始编号：</label>
+            <input type="number" id="startNum" value="1" min="1">
+        </div>
+        
+        <div class="form-group">
+            <label>结束编号：</label>
+            <input type="number" id="endNum" value="500" min="1">
+        </div>
+        
+        <div class="form-group">
+            <label>编号位数（补零）：</label>
+            <select id="padding">
+                <option value="3">3位（001, 002, ...）</option>
+                <option value="4">4位（0001, 0002, ...）</option>
+                <option value="5">5位（00001, 00002, ...）</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label>输出格式：</label>
+            <select id="format">
+                <option value="js">JavaScript 数组（用于 codes.js）</option>
+                <option value="list">纯文本列表（一行一个）</option>
+                <option value="excel">Excel 格式（制表符分隔）</option>
+            </select>
+        </div>
+        
+        <button class="btn" onclick="generateCodes()">生成激活码</button>
+        
+        <div id="output" class="output hidden">
+            <div class="stats">
+                共生成 <span id="count">0</span> 个激活码
+            </div>
+            
+            <h3>生成结果：</h3>
+            <div class="code-list" id="codeList"></div>
+            
+            <button class="btn" onclick="copyToClipboard()">📋 复制到剪贴板</button>
+            
+            <div class="tip">
+                💡 提示：复制后，直接粘贴到 codes.js 文件的 ACTIVATION_CODES 数组中即可。
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function generateCodes() {
+            const prefix = document.getElementById('prefix').value.trim();
+            const startNum = parseInt(document.getElementById('startNum').value);
+            const endNum = parseInt(document.getElementById('endNum').value);
+            const padding = parseInt(document.getElementById('padding').value);
+            const format = document.getElementById('format').value;
+            
+            // 验证输入
+            if (!prefix) {
+                alert('请输入激活码前缀！');
+                return;
+            }
+            
+            if (startNum > endNum) {
+                alert('起始编号不能大于结束编号！');
+                return;
+            }
+            
+            if (endNum - startNum > 10000) {
+                if (!confirm('你要生成超过10000个激活码，确定继续吗？')) {
+                    return;
+                }
+            }
+            
+            // 生成激活码
+            const codes = [];
+            for (let i = startNum; i <= endNum; i++) {
+                const num = String(i).padStart(padding, '0');
+                codes.push(`${prefix}-${num}`);
+            }
+            
+            // 格式化输出
+            let output = '';
+            if (format === 'js') {
+                output = '[\n    "' + codes.join('",\n    "') + '"\n]';
+            } else if (format === 'list') {
+                output = codes.join('\n');
+            } else if (format === 'excel') {
+                output = codes.join('\t');
+            }
+            
+            // 显示结果
+            document.getElementById('count').textContent = codes.length;
+            document.getElementById('codeList').textContent = output;
+            document.getElementById('output').classList.remove('hidden');
+            
+            // 滚动到结果区域
+            document.getElementById('output').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        function copyToClipboard() {
+            const codeList = document.getElementById('codeList');
+            const text = codeList.textContent;
+            
+            // 复制到剪贴板
+            navigator.clipboard.writeText(text).then(() => {
+                alert('✅ 已复制到剪贴板！\n\n现在可以粘贴到 codes.js 文件中了。');
+            }).catch(err => {
+                // 兼容旧浏览器的方法
+                const textarea = document.createElement('textarea');
+                textarea.value = text;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                alert('✅ 已复制到剪贴板！');
+            });
+        }
+        
+        // 回车键触发生成
+        document.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                generateCodes();
+            }
+        });
+    </script>
+</body>
+</html>
+
